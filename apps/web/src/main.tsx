@@ -1,9 +1,11 @@
-import "./index.css";
+import "./assets/index.css";
 import { createRoot } from "react-dom/client";
-import { Button } from "@/components/button";
+import { Providers } from "./providers/Providers";
 
-const App = () => {
-  return <Button>Click me</Button>;
-};
+import App from "./App";
 
-createRoot(document.getElementById("app")!).render(<App />);
+createRoot(document.getElementById("app")!).render(
+  <Providers>
+    <App />
+  </Providers>,
+);
