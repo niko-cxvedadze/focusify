@@ -1,8 +1,9 @@
-import { PropsWithChildren } from "react";
-import { HeroUIProvider } from "@heroui/react";
-import { BrowserRouter } from "react-router";
+import { PropsWithChildren } from 'react'
 
-import { AuthModal } from "@/components/AuthModal";
+import { HeroUIProvider } from '@heroui/react'
+import { BrowserRouter } from 'react-router'
+
+import { AuthModal } from '@/components/AuthModal'
 
 export function Providers({ children }: PropsWithChildren) {
   return (
@@ -12,5 +13,5 @@ export function Providers({ children }: PropsWithChildren) {
         <AuthModal />
       </HeroUIProvider>
     </BrowserRouter>
-  );
+  )
 }

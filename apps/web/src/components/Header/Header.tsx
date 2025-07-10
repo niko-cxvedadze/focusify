@@ -1,9 +1,10 @@
-import { Button } from "@heroui/button";
-import { authModalAtom } from "../../atoms/global.atoms";
-import { useAtom } from "jotai";
+import { Button } from '@heroui/button'
+import { useAtom } from 'jotai'
+
+import { authModalAtom } from '../../atoms/global.atoms'
 
 export function Header() {
-  const [isOpen, setIsOpen] = useAtom(authModalAtom);
+  const [isOpen, setIsOpen] = useAtom(authModalAtom)
 
   return (
     <div className="border-b-divider w-full border-b py-3">
@@ -17,5 +18,5 @@ export function Header() {
         </div>
       </div>
     </div>
-  );
+  )
 }

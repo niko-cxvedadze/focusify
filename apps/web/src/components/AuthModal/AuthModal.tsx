@@ -1,9 +1,10 @@
-import { useAtom } from "jotai";
-import { authModalAtom } from "../../atoms/global.atoms";
-import { Modal, ModalContent, ModalHeader, ModalBody, Button, Checkbox, Input, Link, Tabs, Tab } from "@heroui/react";
+import { Modal, ModalBody, ModalContent, ModalHeader, Tab, Tabs } from '@heroui/react'
+import { useAtom } from 'jotai'
+
+import { authModalAtom } from '../../atoms/global.atoms'
 
 export function AuthModal() {
-  const [isOpen, setIsOpen] = useAtom(authModalAtom);
+  const [isOpen, setIsOpen] = useAtom(authModalAtom)
 
   return (
     <Modal isOpen={isOpen} placement="top-center" onOpenChange={(value) => setIsOpen(value)}>
@@ -14,9 +15,9 @@ export function AuthModal() {
             <ModalBody>
               <Tabs
                 className="'w-full"
-                classNames={{ tabList: "w-full" }}
+                classNames={{ tabList: 'w-full' }}
                 aria-label="Tabs variants"
-                variant={"underlined"}
+                variant={'underlined'}
               >
                 <Tab key="photos" title="შესვლა" className="w-full" />
                 <Tab key="music" title="რეგისტრაცია" className="w-full" />
@@ -26,5 +27,5 @@ export function AuthModal() {
         )}
       </ModalContent>
     </Modal>
-  );
+  )
 }

@@ -1,6 +1,7 @@
-import { Button } from "@heroui/button";
-import { Select, SelectItem } from "@heroui/select";
-import { CityOptions, LicenseCategoryOptions } from "@/config/global.config";
+import { Button } from '@heroui/button'
+import { Select, SelectItem } from '@heroui/select'
+
+import { CityOptions, LicenseCategoryOptions } from '@/config/global.config'
 
 export function HomeView() {
   return (
@@ -8,8 +9,8 @@ export function HomeView() {
       <div className="flex flex-1 flex-col gap-2">
         <h1 className="text-4xl font-bold">იპოვე ინსტრუქტორი მარტივად</h1>
         <p className="text-lg">
-          მართვის მოწმობის ინსტრუქტორის პოვნა ასე მარტივი არასდროს ყოფილა, უბრალოდ აირჩიე ქალაქი და კატეგორია, და
-          დააკლიკე ძებნას.
+          მართვის მოწმობის ინსტრუქტორის პოვნა ასე მარტივი არასდროს ყოფილა, უბრალოდ აირჩიე ქალაქი და
+          კატეგორია, და დააკლიკე ძებნას.
         </p>
       </div>
       <div className="flex flex-1 flex-col gap-2">
@@ -26,5 +27,5 @@ export function HomeView() {
         <Button color="primary">ძებნა</Button>
       </div>
     </div>
-  );
+  )
 }

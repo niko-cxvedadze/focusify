@@ -7,10 +7,16 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "zod": "4.0.2",
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
     "turbo": "^2.4.4",
-    "prettier-plugin-tailwindcss": "^0.6.11"
+    "rimraf": "^5.0.5",
+    "@types/node": "^22.13.1",
+    "@biomejs/biome": "2.1.1",
+    "@repo/eslint-config": "workspace:*",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0"
   },
   "packageManager": "pnpm@8.15.6",
   "name": "with-vite-react"

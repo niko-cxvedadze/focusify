@@ -1,3 +1,3 @@
-import { atom } from "jotai";
+import { atom } from 'jotai'
 
-export const authModalAtom = atom(false);
+export const authModalAtom = atom(false)
