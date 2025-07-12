@@ -6,3 +6,8 @@
   --tw-bg-opacity: 1;
   background-color: hsl(var(--heroui-primary));
 }
+
+body {
+  min-height: 100vh;
+  background-color: hsl(var(--heroui-content2));
+}

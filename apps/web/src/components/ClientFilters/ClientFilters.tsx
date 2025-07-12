@@ -23,17 +23,17 @@ export function ClientFitlers() {
   return (
     <div className="w-full bg-background shadow-small rounded-md p-4">
       <div className="flex w-full gap-4">
-        <Select color="primary" label="აირჩიე ქალაქი" required size="sm" variant="faded">
+        <Select color="primary" label="აირჩიე ქალაქი" required size="sm" variant="bordered">
           {CityOptions.map((animal) => (
             <SelectItem key={animal.key}>{animal.label}</SelectItem>
           ))}
         </Select>
-        <Select color="primary" label="აირჩიე კატეგორია" size="sm" variant="faded">
+        <Select color="primary" label="აირჩიე კატეგორია" size="sm" variant="bordered">
           {LicenseCategoryOptions.map((category) => (
             <SelectItem key={category.key}>{category.label}</SelectItem>
           ))}
         </Select>
-        <Select color="primary" label="აირჩიე ენა" size="sm" variant="faded">
+        <Select color="primary" label="აირჩიე ენა" size="sm" variant="bordered">
           {LanguageOptions.map((language) => (
             <SelectItem key={language.key}>{language.label}</SelectItem>
           ))}
@@ -44,7 +44,7 @@ export function ClientFitlers() {
           color="primary"
           label="აირჩიე თარიღი"
           size="sm"
-          variant="faded"
+          variant="bordered"
           value={selectedDate}
           onChange={setSelectedDate}
         />
@@ -52,7 +52,7 @@ export function ClientFitlers() {
           color="primary"
           label="აირჩიე საათი"
           size="sm"
-          variant="faded"
+          variant="bordered"
           selectedKeys={selectedTime ? [selectedTime] : []}
           onSelectionChange={(keys) => setSelectedTime(Array.from(keys)[0] as string)}
         >
@@ -65,7 +65,7 @@ export function ClientFitlers() {
           label="ძებნა"
           placeholder="შეიყვანე საძიებო სიტყვა"
           size="sm"
-          variant="faded"
+          variant="bordered"
           value={searchKeyword}
           onValueChange={setSearchKeyword}
         />
