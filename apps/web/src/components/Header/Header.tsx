@@ -7,8 +7,8 @@ export function Header() {
   const [isOpen, setIsOpen] = useAtom(authModalAtom)
 
   return (
-    <div className="border-b-divider w-full border-b py-3">
-      <div className="mx-auto flex w-full max-w-screen-xl items-center justify-between px-6">
+    <div className="border-b-divider w-full border-b py-3 bg-background">
+      <div className="container flex w-full items-center justify-between">
         <h1 className="font-bold">alldrive.ge</h1>
         <div className="flex gap-2">
           <Button variant="faded" onPress={() => setIsOpen(true)}>

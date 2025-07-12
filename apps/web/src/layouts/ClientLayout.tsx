@@ -1,14 +1,16 @@
 import { Outlet } from 'react-router'
 
-import { Header } from '../components/Header'
+import { Footer } from '@/components/Footer'
+import { Header } from '@/components/Header'
 
 export function ClientLayout() {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="mx-auto max-w-screen-xl max-xl:max-w-screen-lg max-lg:max-w-screen-md px-6">
+      <div className="container flex-grow">
         <Outlet />
       </div>
-    </>
+      <Footer />
+    </div>
   )
 }

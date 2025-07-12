@@ -9,5 +9,9 @@
 
 body {
   min-height: 100vh;
-  background-color: hsl(var(--heroui-content2));
+  background-color: hsl(var(--heroui-default-50));
+}
+
+.container {
+  @apply mx-auto max-w-screen-xl px-6 max-xl:max-w-screen-lg max-lg:max-w-screen-md;
 }
