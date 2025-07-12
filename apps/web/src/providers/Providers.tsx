@@ -1,17 +1,14 @@
 import { PropsWithChildren } from 'react'
 
 import { HeroUIProvider } from '@heroui/react'
-import { BrowserRouter } from 'react-router'
-
-import { AuthModal } from '@/components/AuthModal'
+import { useHref, useNavigate } from 'react-router'
 
 export function Providers({ children }: PropsWithChildren) {
+  const navigate = useNavigate()
+
   return (
-    <BrowserRouter>
-      <HeroUIProvider>
-        {children}
-        <AuthModal />
-      </HeroUIProvider>
-    </BrowserRouter>
+    <HeroUIProvider navigate={navigate} useHref={useHref}>
+      {children}
+    </HeroUIProvider>
   )
 }

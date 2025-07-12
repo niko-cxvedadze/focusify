@@ -1,14 +1,19 @@
 import { Route, Routes } from 'react-router'
 
-import { PublicLayout } from './layouts/PublicLayout'
+import { ClientLayout } from './layouts/ClientLayout'
+import { InstructorLayout } from './layouts/InstructorLayout'
 //views
-import { HomeView } from './views/HomeView'
+import { ClientView } from './views/ClientView/ClientView'
+import { InstructorView } from './views/InstructorView'
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<PublicLayout />}>
-        <Route index element={<HomeView />} />
+      <Route path="/" element={<ClientLayout />}>
+        <Route index element={<ClientView />} />
+      </Route>
+      <Route path="/instructor" element={<InstructorLayout />}>
+        <Route index element={<InstructorView />} />
       </Route>
     </Routes>
   )

@@ -3,7 +3,7 @@ import { Select, SelectItem } from '@heroui/select'
 
 import { CityOptions, LicenseCategoryOptions } from '@/config/global.config'
 
-export function HomeView() {
+export function ClientView() {
   return (
     <div className="mt-6 flex h-full w-full justify-between gap-6">
       <div className="flex flex-1 flex-col gap-2">
