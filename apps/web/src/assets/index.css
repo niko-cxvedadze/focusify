@@ -15,3 +15,18 @@ body {
 .container {
   @apply mx-auto max-w-screen-xl px-6 max-xl:max-w-screen-lg max-lg:max-w-screen-md;
 }
+
+/* Star rating horizontal layout */
+.star-rating-container {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.star-rating-container > div {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.star-rating-container svg {
+  display: inline-block !important;
+}

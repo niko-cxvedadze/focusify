@@ -1,11 +1,11 @@
 import { ClientFitlers } from '@/components/ClientFilters'
-import { InstructorCardsRow } from '@/components/InstructorCards'
+import { InstructorCarousel } from '@/components/InstructorCarousel'
 
-export function ClientView() {
+export function HomeView() {
   return (
     <div className="w-full mt-6">
       <ClientFitlers />
-      <InstructorCardsRow className="mt-6" />
+      <InstructorCarousel className="mt-6" />
     </div>
   )
 }

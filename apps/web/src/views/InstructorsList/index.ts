@@ -1,0 +1,1 @@
+export { InstructorsList } from './InstructorsList'

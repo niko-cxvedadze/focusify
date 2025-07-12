@@ -8,11 +8,13 @@ import { CalendarDate } from '@internationalized/date'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
 
 import { CityOptions, LanguageOptions, LicenseCategoryOptions } from '@/config/global.config'
+import { useSticky } from '@/hooks/useSticky'
 
 export function ClientFitlers() {
   const [selectedDate, setSelectedDate] = useState<CalendarDate | null>(null)
   const [selectedTime, setSelectedTime] = useState<string>('')
   const [searchKeyword, setSearchKeyword] = useState<string>('')
+  const [containerRef, isSticky] = useSticky()
 
   // Time options for the day
   const TimeOptions = Array.from({ length: 24 }, (_, i) => ({
@@ -21,7 +23,12 @@ export function ClientFitlers() {
   }))
 
   return (
-    <div className="w-full bg-background shadow-small rounded-md p-4">
+    <div
+      ref={containerRef}
+      className={`w-full bg-background shadow-small p-4 sticky top-0 z-10 ${
+        isSticky ? 'rounded-b-md' : 'rounded-md'
+      }`}
+    >
       <div className="flex w-full gap-4">
         <Select color="primary" label="აირჩიე ქალაქი" required size="sm" variant="bordered">
           {CityOptions.map((animal) => (

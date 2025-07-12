@@ -6,13 +6,13 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 
-import { InstructorCard } from './InstructorCard'
+import { InstructorCarouselCard } from './InstructorCarouselCard'
 
-interface InstructorCardsRowProps {
+interface InstructorCarouselProps {
   className?: string
 }
 
-export function InstructorCardsRow({ className }: InstructorCardsRowProps) {
+export function InstructorCarousel({ className }: InstructorCarouselProps) {
   const items = Array.from({ length: 7 })
   const sliderRef = useRef<Slider | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -102,7 +102,7 @@ export function InstructorCardsRow({ className }: InstructorCardsRowProps) {
       >
         {items.map((_, idx) => (
           <div key={idx} className="px-2 h-full">
-            <InstructorCard />
+            <InstructorCarouselCard />
           </div>
         ))}
       </Slider>

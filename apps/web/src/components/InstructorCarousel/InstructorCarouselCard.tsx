@@ -1,21 +1,21 @@
 import { Divider } from '@heroui/react'
 import { Chip } from '@heroui/react'
 
-interface InstructorCardProps {
+interface InstructorCarouselCardProps {
   imageUrl?: string
   fullName?: string
   location?: string
   categories?: string[]
 }
 
-export function InstructorCard({
+export function InstructorCarouselCard({
   imageUrl = 'https://randomuser.me/api/portraits/men/32.jpg',
   fullName = 'გიორგი ბერიძე',
   location = 'თბილისი',
   categories = ['B (მექანიკა)', 'B1 (ავტომატიკა)']
-}: InstructorCardProps) {
+}: InstructorCarouselCardProps) {
   return (
-    <div className="rounded-md bg-background cursor-pointer border-divider border shadow-sm w-full p-0 overflow-hidden flex flex-col">
+    <div className="rounded-md bg-background cursor-pointer shadow-small w-full p-0 overflow-hidden flex flex-col">
       {/* Full-width image */}
       <div className="w-full h-40 bg-background border-b border-divider overflow-hidden">
         <img src={imageUrl} alt={fullName} className="object-cover w-full h-full" />
