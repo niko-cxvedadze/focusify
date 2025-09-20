@@ -9,7 +9,8 @@
     "format": "prettier --config ../../.prettierrc --ignore-path .prettierignore --write \"**/*.+(js|ts|tsx|json)\""
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./validators/projects": "./src/validators/projects.ts"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
