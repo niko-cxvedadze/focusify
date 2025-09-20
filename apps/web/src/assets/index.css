@@ -9,7 +9,6 @@
 
 body {
   min-height: 100vh;
-  background-color: hsl(var(--heroui-default-50));
 }
 
 .container {

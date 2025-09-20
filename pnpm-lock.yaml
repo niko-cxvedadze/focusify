@@ -150,6 +150,9 @@ importers:
       '@heroui/theme':
         specifier: ^2.4.12
         version: 2.4.12(tailwindcss@3.4.17)
+      '@heroui/use-theme':
+        specifier: ^2.1.10
+        version: 2.1.10(react@19.0.0)
       '@internationalized/date':
         specifier: ^3.8.2
         version: 3.8.2
@@ -2867,6 +2870,14 @@ packages:
 
   /@heroui/use-scroll-position@2.1.6(react@19.0.0):
     resolution: {integrity: sha512-9ap2AIuPjJCGLt7ZZAQqSE7s9Md1lUqnmxXf6UhKH0CJowhVHIl76gtV2rMeQZ+vsjbG3d4tsX2Vw13h+HLpuA==}
+    peerDependencies:
+      react: '>=18 || >=19.0.0-rc.0'
+    dependencies:
+      react: 19.0.0
+    dev: false
+
+  /@heroui/use-theme@2.1.10(react@19.0.0):
+    resolution: {integrity: sha512-JM9Y56bzHMU0rEz1K86Tnli2oRqQY3/NYNOHXbVXQtP+ZB2eabm9Cbl15bPZzSskpEsD5oKnbccFV4dCYhenmw==}
     peerDependencies:
       react: '>=18 || >=19.0.0-rc.0'
     dependencies:

@@ -1,6 +1,8 @@
 import { Button } from '@heroui/button'
 import { useNavigate } from 'react-router'
 
+import { ThemeSwitcher } from '@/components/ThemeSwitcher'
+
 export function Header() {
   const navigate = useNavigate()
 
@@ -11,6 +13,7 @@ export function Header() {
           Starter Kit
         </h1>
         <div className="flex gap-2">
+          <ThemeSwitcher />
           <Button variant="faded">
             Button
           </Button>

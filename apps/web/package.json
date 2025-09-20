@@ -23,6 +23,7 @@
     "@heroui/system": "^2.4.12",
     "@heroui/tabs": "^2.2.13",
     "@heroui/theme": "^2.4.12",
+    "@heroui/use-theme": "^2.1.10",
     "@internationalized/date": "^3.8.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
