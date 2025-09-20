@@ -16,17 +16,17 @@ Review this before you work with forms https://ui.shadcn.com/docs/components/for
 
 When creating validators for forms using Zod:
 
-- Validator schemas should be named with `FormValidator` suffix (e.g. `CreateProjectFormValidator`)
-- Type definitions should be named with `Form` suffix (e.g. `CreateProjectForm`)
+- Validator schemas should be named with `FormValidator` suffix (e.g. `ProjectFormValidator`)
+- Type definitions should be named with `Form` suffix (e.g. `ProjectForm`)
 - Example:
 
 ```typescript
-export const CreateProjectFormValidator = z.object({
+export const ProjectFormValidator = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().optional()
 })
 
-export type CreateProjectForm = z.infer<typeof CreateProjectFormValidator>
+export type ProjectForm = z.infer<typeof ProjectFormValidator>
 ```
 
 # Button Sizing Convention
@@ -100,3 +100,52 @@ Always use `size="sm"` for submit and cancel buttons in dialogs:
 ```
 
 This ensures consistent sizing and proper visual hierarchy in dialog actions.
+
+# Hooks Naming Convention
+
+For InstantDB hooks, follow these naming patterns:
+
+- **Query hooks**: Use `Query` suffix (e.g. `useProjectsQuery`, `useUsersQuery`)
+- **Mutation hooks**: Use `Mutation` suffix (e.g. `useProjectsMutation`, `useUsersMutation`)
+- **File naming**: Match the hook name exactly (e.g. `useProjectsQuery.ts`, `useProjectsMutation.ts`)
+- Example:
+
+```typescript
+// File: hooks/queries/useProjectsQuery.ts
+export function useProjectsQuery() {
+  // query logic
+}
+
+// File: hooks/mutations/useProjectsMutation.ts
+export function useProjectsMutation() {
+  // mutation logic
+}
+```
+
+This ensures clear separation between data fetching and data modification operations.
+
+# InstantDB Entity Types Convention
+
+All InstantDB entity types should be defined in the `packages/types/src/` directory:
+
+- **Entity types**: Create in separate files named after the entity (e.g. `packages/types/src/projects.ts`)
+- **Use InstaQLEntity**: Import from `@instantdb/react` and use the schema types
+- **Export from index**: Always export from `packages/types/src/index.ts`
+- **Import in components**: Use `@repo/types` import alias
+- Example:
+
+```typescript
+// File: packages/types/src/projects.ts
+import { InstaQLEntity } from '@instantdb/react'
+import type { AppSchema } from '../../../instant.schema'
+
+export type Project = InstaQLEntity<AppSchema, 'projects'>
+
+// File: packages/types/src/index.ts
+export * from './projects'
+
+// Usage in components:
+import { Project } from '@repo/types'
+```
+
+This centralizes all database entity types and ensures consistent typing across the application.

@@ -1,58 +1,40 @@
 import React from 'react'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { CreateProjectForm, CreateProjectFormValidator } from '@repo/types/validators/projects'
+import { Project, ProjectForm } from '@repo/types'
 import { DollarSign } from 'lucide-react'
-import { useForm } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage
-} from '@/components/ui/form'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { FormLabel } from '@/components/ui/form-label'
 import { Input } from '@/components/ui/input'
 
-interface CreateProjectDialogProps {
-  trigger: React.ReactNode
+import { useProjectsMutation } from '@/hooks/mutations/useProjectsMutation'
+
+interface ProjectDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  project?: Project
 }
 
-export function CreateProjectDialog({ trigger }: CreateProjectDialogProps) {
-  const [open, setOpen] = React.useState(false)
+export function ProjectDialog({ open, onOpenChange, project }: ProjectDialogProps) {
+  const { form, isLoading, handleFormSubmit } = useProjectsMutation(project)
+  const isEditMode = !!project
 
-  const form = useForm<CreateProjectForm>({
-    resolver: zodResolver(CreateProjectFormValidator),
-    defaultValues: { title: '', description: '', hourlyRate: undefined }
-  })
-
-  const handleSubmit = (data: CreateProjectForm) => {
-    console.log('Creating project:', data)
-    // TODO: Implement project creation logic with InstantDB
-
-    form.reset()
-    setOpen(false)
-  }
+  // Memoize the submit handler to prevent infinite re-renders
+  const onSubmit = React.useCallback(
+    (data: ProjectForm) => handleFormSubmit(data, () => onOpenChange(false)),
+    [handleFormSubmit, onOpenChange]
+  )
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create New Project</DialogTitle>
+          <DialogTitle>{isEditMode ? 'Edit Project' : 'Create New Project'}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="title"
@@ -94,8 +76,8 @@ export function CreateProjectDialog({ trigger }: CreateProjectDialogProps) {
                         className="pl-9"
                         {...field}
                         onChange={(e) => {
-                          const value = e.target.value === '' ? undefined : Number(e.target.value)
-                          field.onChange(value)
+                          const value = e.target.value === '' ? '' : e.target.value
+                          field.onChange(value === '' ? undefined : Number(value))
                         }}
                         value={field.value ?? ''}
                       />
@@ -106,10 +88,24 @@ export function CreateProjectDialog({ trigger }: CreateProjectDialogProps) {
               )}
             />
             <div className="flex justify-end space-x-2">
-              <Button type="button" variant="outline" size="sm" onClick={() => setOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => onOpenChange(false)}
+                disabled={isLoading}
+              >
                 Cancel
               </Button>
-              <Button type="submit" size="sm">Create Project</Button>
+              <Button type="submit" size="sm" disabled={isLoading}>
+                {isLoading
+                  ? isEditMode
+                    ? 'Updating...'
+                    : 'Creating...'
+                  : isEditMode
+                    ? 'Update Project'
+                    : 'Create Project'}
+              </Button>
             </div>
           </form>
         </Form>

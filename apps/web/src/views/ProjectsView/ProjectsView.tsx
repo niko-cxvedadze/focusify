@@ -1,25 +1,16 @@
+import React from 'react'
 import { Plus } from 'lucide-react'
 
-import { CreateProjectDialog } from '@/components/Projects/CreateProjectDialog'
+import { ProjectDialog } from '@/components/Projects/ProjectDialog'
 import { ProjectCard } from '@/components/Projects/ProjectCard'
 import { Button } from '@/components/ui/button'
 
-const projects = [
-  {
-    title: 'Work Focus',
-    description: 'Focus on work-related tasks and improve productivity during work hours.'
-  },
-  {
-    title: 'Personal Growth',
-    description: 'Personal development goals and habits to build a better lifestyle.'
-  },
-  {
-    title: 'Learning',
-    description: 'Continuous learning and skill development in various areas of interest.'
-  }
-]
+import { useProjectsQuery } from '@/hooks/queries/useProjectsQuery'
 
 export function ProjectsView() {
+  const { projects } = useProjectsQuery()
+  const [createOpen, setCreateOpen] = React.useState(false)
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -30,25 +21,22 @@ export function ProjectsView() {
             Manage and organize your projects to stay focused and productive.
           </p>
         </div>
-        <CreateProjectDialog
-          trigger={
-            <Button size={'sm'}>
-              <Plus className="h-4 w-4" />
-              New Project
-            </Button>
-          }
-        />
+        <Button size={'sm'} onClick={() => setCreateOpen(true)}>
+          <Plus className="h-4 w-4" />
+          New Project
+        </Button>
+
+        {createOpen && (
+          <ProjectDialog
+            open={createOpen}
+            onOpenChange={setCreateOpen}
+          />
+        )}
       </div>
 
       {/* Projects Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => (
-          <ProjectCard
-            key={project.title}
-            title={project.title}
-            description={project.description}
-          />
-        ))}
+        {projects?.map((project) => <ProjectCard key={project.id} project={project} />)}
       </div>
     </div>
   )
