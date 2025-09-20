@@ -1,9 +1,9 @@
 {
-  "name": "alldrive-backend",
+  "name": "focusify-backend",
   "version": "1.0.0",
-  "description": "alldrive.ge backend",
-  "author": "AllDrive",
-  "repository": "alldrive/alldrive-backend",
+  "description": "focusify backend",
+  "author": "Focusify",
+  "repository": "focusify/focusify-backend",
   "license": "MIT",
   "main": "index.ts",
   "private": true,
