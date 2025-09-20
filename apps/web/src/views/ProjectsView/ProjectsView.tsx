@@ -14,7 +14,7 @@ export function ProjectsView() {
   const [createOpen, setCreateOpen] = React.useState(false)
 
   return (
-    <div className="space-y-6">
+    <div>
       {/* Header */}
       <PageHeader title="Projects">
         <Button size={'sm'} onClick={() => setCreateOpen(true)}>
@@ -22,10 +22,12 @@ export function ProjectsView() {
           New Project
         </Button>
       </PageHeader>
-      {createOpen && <ProjectDialog open={createOpen} onOpenChange={setCreateOpen} />}
-      {/* Projects Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {projects?.map((project) => <ProjectCard key={project.id} project={project} />)}
+      <div className="space-y-4 p-4">
+        {createOpen && <ProjectDialog open={createOpen} onOpenChange={setCreateOpen} />}
+        {/* Projects Grid */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {projects?.map((project) => <ProjectCard key={project.id} project={project} />)}
+        </div>
       </div>
     </div>
   )

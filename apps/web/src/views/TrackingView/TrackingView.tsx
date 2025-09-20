@@ -37,7 +37,7 @@ export function TrackingView() {
   }
 
   return (
-    <div className="space-y-6">
+    <div>
       {/* Header with Global Project Selector */}
       <PageHeader title="Time Tracking">
         <Select value={projectId || ''} onValueChange={handleProjectChange}>
@@ -53,13 +53,14 @@ export function TrackingView() {
           </SelectContent>
         </Select>
       </PageHeader>
-
       {/* Timer and Reports Section */}
-      {selectedProject && (
-        <div className="w-full">
-          <TimerCard project={selectedProject} />
-        </div>
-      )}
+      <div className="p-4">
+        {selectedProject && (
+          <div className="w-full">
+            <TimerCard project={selectedProject} />
+          </div>
+        )}
+      </div>
     </div>
   )
 }
