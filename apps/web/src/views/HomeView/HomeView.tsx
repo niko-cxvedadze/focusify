@@ -1,26 +1,103 @@
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { LogOut } from 'lucide-react'
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
+import { db } from '@/lib/instant'
 
 export function HomeView() {
+  const { user } = db.useAuth()
+
+  const handleSignOut = () => {
+    db.auth.signOut()
+  }
+
   return (
-    <div className="w-full min-h-screen p-4 md:p-6 space-y-6 md:space-y-8 bg-background">
+    <div className="min-h-screen p-6">
       {/* Header */}
-      <div className="flex justify-between items-center pb-4 border-b border-divider">
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground">Welcome to Starter Kit</h1>
-        <ThemeSwitcher />
+      <div className="flex justify-between items-center pb-6 border-b mb-8">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <div className="flex items-center gap-3">
+          <ThemeSwitcher />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleSignOut}
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Sign Out
+          </Button>
+        </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-6">
-        <div className="max-w-2xl">
-          <h2 className="text-4xl font-bold text-foreground mb-4">
-            Clean React Starter
-          </h2>
-          <p className="text-lg text-muted-foreground mb-6">
-            A modern starter template built with React 19, Vite, HeroUI, Tailwind CSS, and InstantDB.
-          </p>
-          <p className="text-base text-muted-foreground">
-            Ready for your next amazing project. Start building something great!
-          </p>
+      {/* Welcome Section */}
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+        <div className="space-y-8 w-full max-w-4xl">
+          <Card className="w-full max-w-md mx-auto">
+            <CardHeader>
+              <div className="flex flex-col items-center space-y-4">
+                <Avatar className="h-16 w-16">
+                  <AvatarFallback className="bg-primary text-primary-foreground text-lg">
+                    {user?.email?.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <CardTitle className="text-xl">Welcome!</CardTitle>
+                  <CardDescription className="mt-1">
+                    {user?.email}
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center space-y-4">
+                <p className="text-muted-foreground">
+                  You're successfully signed in to your account.
+                </p>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium">What's next?</p>
+                  <ul className="text-sm text-muted-foreground text-left space-y-1">
+                    <li>• Build your amazing features</li>
+                    <li>• Add your components</li>
+                    <li>• Connect to InstantDB</li>
+                    <li>• Deploy your app</li>
+                  </ul>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Additional Info */}
+          <Card className="w-full max-w-2xl mx-auto">
+            <CardHeader>
+              <CardTitle>Ready to build?</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="mb-4">
+                This starter kit includes everything you need to build a modern React application:
+              </CardDescription>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                <div className="space-y-2">
+                  <h4 className="font-medium">Frontend Stack</h4>
+                  <ul className="text-muted-foreground space-y-1">
+                    <li>• React 19 with TypeScript</li>
+                    <li>• Vite for fast development</li>
+                    <li>• shadcn/ui component library</li>
+                    <li>• Tailwind CSS for styling</li>
+                  </ul>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="font-medium">Backend & Auth</h4>
+                  <ul className="text-muted-foreground space-y-1">
+                    <li>• InstantDB real-time database</li>
+                    <li>• Magic code authentication</li>
+                    <li>• Type-safe database operations</li>
+                    <li>• Auto-sync across clients</li>
+                  </ul>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

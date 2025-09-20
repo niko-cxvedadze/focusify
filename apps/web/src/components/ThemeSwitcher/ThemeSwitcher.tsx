@@ -1,18 +1,47 @@
-import { Button } from '@heroui/button'
-import { useTheme } from '@heroui/use-theme'
-import { MdLightMode, MdDarkMode } from 'react-icons/md'
+import { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
+import { Moon, Sun } from 'lucide-react'
 
 export function ThemeSwitcher() {
-  const { theme, setTheme } = useTheme()
+  const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    // Check system preference or localStorage
+    const savedTheme = localStorage.getItem('theme')
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const shouldUseDark = savedTheme === 'dark' || (!savedTheme && systemPrefersDark)
+
+    setIsDark(shouldUseDark)
+    updateTheme(shouldUseDark)
+  }, [])
+
+  const updateTheme = (dark: boolean) => {
+    if (dark) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    localStorage.setItem('theme', dark ? 'dark' : 'light')
+  }
+
+  const toggleTheme = () => {
+    const newIsDark = !isDark
+    setIsDark(newIsDark)
+    updateTheme(newIsDark)
+  }
 
   return (
     <Button
-      isIconOnly
       variant="ghost"
-      onPress={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      size="icon"
+      onClick={toggleTheme}
       aria-label="Toggle theme"
     >
-      {theme === 'light' ? <MdDarkMode size={20} /> : <MdLightMode size={20} />}
+      {isDark ? (
+        <Sun className="h-4 w-4" />
+      ) : (
+        <Moon className="h-4 w-4" />
+      )}
     </Button>
   )
 }
