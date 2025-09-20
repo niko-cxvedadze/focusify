@@ -37,7 +37,7 @@ export function TrackingView() {
   }
 
   return (
-    <div>
+    <div className="h-full flex flex-col">
       {/* Header with Global Project Selector */}
       <PageHeader title="Time Tracking">
         <Select value={projectId || ''} onValueChange={handleProjectChange}>
@@ -53,14 +53,19 @@ export function TrackingView() {
           </SelectContent>
         </Select>
       </PageHeader>
-      {/* Timer and Reports Section */}
-      <div className="p-4">
-        {selectedProject && (
-          <div className="w-full">
-            <TimerCard project={selectedProject} />
+
+      {/* Full Screen Timer */}
+      {selectedProject ? (
+        <div className="flex-1 p-8">
+          <TimerCard project={selectedProject} />
+        </div>
+      ) : (
+        <div className="flex-1 flex items-center justify-center p-8">
+          <div className="text-center text-muted-foreground">
+            <p className="text-lg">Select a project to start tracking time</p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }
