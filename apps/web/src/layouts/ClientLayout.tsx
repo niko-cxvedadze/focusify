@@ -1,23 +1,33 @@
 import { Outlet } from 'react-router'
 
 import { AppSidebar } from '@/components/AppSidebar'
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
-import { TooltipProvider } from '@/components/ui/tooltip'
+import { Separator } from '@/components/ui/separator'
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/components/ui/sidebar'
 
 export function ClientLayout() {
   return (
-    <TooltipProvider>
-      <SidebarProvider defaultOpen={true}>
-        <AppSidebar collapsible="none" />
-        <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b">
-            <div className="flex-1">{/* Header content can be added here */}</div>
-          </header>
-          <div className="flex-1 overflow-auto p-6">
-            <Outlet />
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <div className="flex items-center gap-2">
+              <span className="font-semibold">Focusify</span>
+            </div>
           </div>
-        </SidebarInset>
-      </SidebarProvider>
-    </TooltipProvider>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <main className="flex-1">
+            <Outlet />
+          </main>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }

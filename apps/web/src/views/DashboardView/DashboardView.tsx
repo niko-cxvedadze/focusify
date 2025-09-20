@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 import { db } from '@/lib/instant'
 
-export function HomeView() {
+export function DashboardView() {
   const { user } = db.useAuth()
 
   return (
@@ -20,7 +20,7 @@ export function HomeView() {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <CardTitle className="text-xl">Welcome!</CardTitle>
+                  <CardTitle className="text-xl">Dashboard</CardTitle>
                   <CardDescription className="mt-1">{user?.email}</CardDescription>
                 </div>
               </div>
@@ -28,7 +28,7 @@ export function HomeView() {
             <CardContent>
               <div className="text-center space-y-4">
                 <p className="text-muted-foreground">
-                  You're successfully signed in to your account.
+                  Welcome to your Focusify dashboard. Here you can manage your productivity and track your progress.
                 </p>
                 <div className="space-y-2">
                   <p className="text-sm font-medium">What's next?</p>
