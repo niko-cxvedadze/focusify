@@ -1,14 +1,7 @@
 import { PropsWithChildren } from 'react'
 
-import { HeroUIProvider } from '@heroui/react'
-import { useHref, useNavigate } from 'react-router'
+import { ThemeProvider } from './ThemeProvider'
 
 export function Providers({ children }: PropsWithChildren) {
-  const navigate = useNavigate()
-
-  return (
-    <HeroUIProvider navigate={navigate} useHref={useHref}>
-      {children}
-    </HeroUIProvider>
-  )
+  return <ThemeProvider>{children}</ThemeProvider>
 }

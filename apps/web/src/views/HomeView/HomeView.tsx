@@ -1,37 +1,15 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { LogOut } from 'lucide-react'
-import { ThemeSwitcher } from '@/components/ThemeSwitcher'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+
 import { db } from '@/lib/instant'
 
 export function HomeView() {
   const { user } = db.useAuth()
 
-  const handleSignOut = () => {
-    db.auth.signOut()
-  }
-
   return (
-    <div className="min-h-screen p-6">
-      {/* Header */}
-      <div className="flex justify-between items-center pb-6 border-b mb-8">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <div className="flex items-center gap-3">
-          <ThemeSwitcher />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleSignOut}
-          >
-            <LogOut className="h-4 w-4 mr-2" />
-            Sign Out
-          </Button>
-        </div>
-      </div>
-
+    <div>
       {/* Welcome Section */}
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+      <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
         <div className="space-y-8 w-full max-w-4xl">
           <Card className="w-full max-w-md mx-auto">
             <CardHeader>
@@ -43,9 +21,7 @@ export function HomeView() {
                 </Avatar>
                 <div>
                   <CardTitle className="text-xl">Welcome!</CardTitle>
-                  <CardDescription className="mt-1">
-                    {user?.email}
-                  </CardDescription>
+                  <CardDescription className="mt-1">{user?.email}</CardDescription>
                 </div>
               </div>
             </CardHeader>
