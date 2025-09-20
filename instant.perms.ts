@@ -15,6 +15,34 @@ const rules = {
       delete: 'isOwner',
       update: 'isOwner'
     }
+  },
+  reportedTimes: {
+    bind: [
+      'isOwner',
+      'auth.id != null && auth.id == data.ownerId',
+      'isAuthenticated',
+      'auth.id != null'
+    ],
+    allow: {
+      view: 'isOwner',
+      create: 'isAuthenticated',
+      delete: 'isOwner',
+      update: 'isOwner'
+    }
+  },
+  timers: {
+    bind: [
+      'isOwner',
+      'auth.id != null && auth.id == data.ownerId',
+      'isAuthenticated',
+      'auth.id != null'
+    ],
+    allow: {
+      view: 'isOwner',
+      create: 'isAuthenticated',
+      delete: 'isOwner',
+      update: 'isOwner'
+    }
   }
 } satisfies InstantRules
 

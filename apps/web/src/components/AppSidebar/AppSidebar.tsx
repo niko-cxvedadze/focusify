@@ -8,6 +8,7 @@ import {
   Focus,
   Settings,
   FolderOpen,
+  Clock,
 } from "lucide-react"
 import { NavMain } from "@/components/ui/nav-main"
 import { NavSecondary } from "@/components/ui/nav-secondary"
@@ -51,6 +52,11 @@ const data = {
       title: "Projects",
       url: "/projects",
       icon: FolderOpen,
+    },
+    {
+      title: "Tracking",
+      url: "/tracking",
+      icon: Clock,
     },
   ],
   navSecondary: [

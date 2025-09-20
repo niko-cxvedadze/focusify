@@ -15,6 +15,22 @@ const _schema = i.schema({
       hourlyRate: i.number().optional(),
       ownerId: i.string().indexed(),
       title: i.string()
+    }),
+    reportedTimes: i.entity({
+      projectId: i.string().indexed(),
+      ownerId: i.string().indexed(),
+      timerId: i.string().optional().indexed(), // Optional reference to the timer that created this report
+      duration: i.number(), // Duration in milliseconds
+      reportedAt: i.string().indexed(), // Date in YYYY-MM-DD format for grouping by day
+      hourlyRate: i.number().optional(), // Project's hourly rate at the time of report creation
+      createdAt: i.number() // Unix timestamp in milliseconds
+    }),
+    timers: i.entity({
+      projectId: i.string().indexed(),
+      ownerId: i.string().indexed(),
+      startedAt: i.number(), // Unix timestamp in milliseconds when timer started
+      finishedAt: i.number().optional(), // Unix timestamp in milliseconds when timer finished (null if still running)
+      createdAt: i.number() // Unix timestamp in milliseconds when record was created
     })
   },
   links: {
@@ -28,6 +44,66 @@ const _schema = i.schema({
         on: '$users',
         has: 'many',
         label: 'projects'
+      }
+    },
+    reportedTimesProject: {
+      forward: {
+        on: 'reportedTimes',
+        has: 'one',
+        label: 'project'
+      },
+      reverse: {
+        on: 'projects',
+        has: 'many',
+        label: 'reportedTimes'
+      }
+    },
+    reportedTimesOwner: {
+      forward: {
+        on: 'reportedTimes',
+        has: 'one',
+        label: 'owner'
+      },
+      reverse: {
+        on: '$users',
+        has: 'many',
+        label: 'reportedTimes'
+      }
+    },
+    timersProject: {
+      forward: {
+        on: 'timers',
+        has: 'one',
+        label: 'project'
+      },
+      reverse: {
+        on: 'projects',
+        has: 'many',
+        label: 'timers'
+      }
+    },
+    timersOwner: {
+      forward: {
+        on: 'timers',
+        has: 'one',
+        label: 'owner'
+      },
+      reverse: {
+        on: '$users',
+        has: 'many',
+        label: 'timers'
+      }
+    },
+    reportedTimesTimer: {
+      forward: {
+        on: 'reportedTimes',
+        has: 'one',
+        label: 'timer'
+      },
+      reverse: {
+        on: 'timers',
+        has: 'one',
+        label: 'reportedTime'
       }
     }
   },
