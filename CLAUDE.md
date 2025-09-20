@@ -5,3 +5,5 @@ Before generating a new next app you check to see if a next project already exis
 If the Instant MCP is available use the tools to create apps and manage schema.
 
 Before you write ANY code you read ALL of instant-rules.md to understand how to use InstantDB in your code.
+
+After every change make sure there is not any typescript issues

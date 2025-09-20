@@ -9,7 +9,7 @@ const _schema = i.schema({
     }),
     $users: i.entity({
       email: i.string().unique().indexed().optional()
-    })
+    }),
   },
   links: {},
   rooms: {}
