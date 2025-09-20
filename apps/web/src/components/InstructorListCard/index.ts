@@ -1,1 +1,0 @@
-export { InstructorListCard } from './InstructorListCard'
