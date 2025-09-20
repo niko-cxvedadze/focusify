@@ -127,6 +127,9 @@ importers:
       '@heroui/checkbox':
         specifier: ^2.3.15
         version: 2.3.15(@heroui/system@2.4.12)(@heroui/theme@2.4.12)(react-dom@19.0.0)(react@19.0.0)
+      '@heroui/chip':
+        specifier: ^2.2.21
+        version: 2.2.21(@heroui/system@2.4.12)(@heroui/theme@2.4.12)(react-dom@19.0.0)(react@19.0.0)
       '@heroui/date-input':
         specifier: ^2.3.21
         version: 2.3.21(@heroui/system@2.4.12)(@heroui/theme@2.4.12)(react-dom@19.0.0)(react@19.0.0)
@@ -142,6 +145,9 @@ importers:
       '@heroui/pagination':
         specifier: ^2.2.20
         version: 2.2.20(@heroui/system@2.4.12)(@heroui/theme@2.4.12)(react-dom@19.0.0)(react@19.0.0)
+      '@heroui/progress':
+        specifier: ^2.2.21
+        version: 2.2.21(@heroui/system@2.4.12)(@heroui/theme@2.4.12)(react-dom@19.0.0)(react@19.0.0)
       '@heroui/react':
         specifier: ^2.7.5
         version: 2.7.5(@types/react@19.0.12)(framer-motion@12.5.0)(react-dom@19.0.0)(react@19.0.0)(tailwindcss@3.4.17)
@@ -1399,6 +1405,25 @@ packages:
       react-dom: 19.0.0(react@19.0.0)
     dev: false
 
+  /@heroui/chip@2.2.21(@heroui/system@2.4.12)(@heroui/theme@2.4.12)(react-dom@19.0.0)(react@19.0.0):
+    resolution: {integrity: sha512-vE1XbVL4U92RjuXZWnQgcPIFQ9amLEDCVTK5IbCF2MJ7Xr6ofDj6KTduauCCH1H40p9y1zk6+fioqvxDEoCgDw==}
+    peerDependencies:
+      '@heroui/system': '>=2.4.18'
+      '@heroui/theme': '>=2.4.17'
+      react: '>=18 || >=19.0.0-rc.0'
+      react-dom: '>=18 || >=19.0.0-rc.0'
+    dependencies:
+      '@heroui/react-utils': 2.1.13(react@19.0.0)
+      '@heroui/shared-icons': 2.1.10(react@19.0.0)
+      '@heroui/shared-utils': 2.1.11
+      '@heroui/system': 2.4.12(@heroui/theme@2.4.12)(framer-motion@12.5.0)(react-dom@19.0.0)(react@19.0.0)
+      '@heroui/theme': 2.4.12(tailwindcss@3.4.17)
+      '@react-aria/focus': 3.21.1(react-dom@19.0.0)(react@19.0.0)
+      '@react-aria/interactions': 3.25.5(react-dom@19.0.0)(react@19.0.0)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+    dev: false
+
   /@heroui/code@2.2.12(@heroui/theme@2.4.12)(react-dom@19.0.0)(react@19.0.0):
     resolution: {integrity: sha512-BYA8zmG2arn7FSCxiPC+ehy+TL7967W6i6iXBUIHpkSNAMPr29AZAC4H0i09b0ibxr0dLJWHC3Y/IPdFK8uI6g==}
     peerDependencies:
@@ -2075,6 +2100,25 @@ packages:
       react-dom: 19.0.0(react@19.0.0)
     dev: false
 
+  /@heroui/progress@2.2.21(@heroui/system@2.4.12)(@heroui/theme@2.4.12)(react-dom@19.0.0)(react@19.0.0):
+    resolution: {integrity: sha512-f/PMOai00oV7+sArWabMfkoA80EskXgXHae4lsKhyRbeki8sKXQRpVwFY5/fINJOJu5mvVXQBwv2yKupx8rogg==}
+    peerDependencies:
+      '@heroui/system': '>=2.4.18'
+      '@heroui/theme': '>=2.4.17'
+      react: '>=18 || >=19.0.0-rc.0'
+      react-dom: '>=18 || >=19.0.0-rc.0'
+    dependencies:
+      '@heroui/react-utils': 2.1.13(react@19.0.0)
+      '@heroui/shared-utils': 2.1.11
+      '@heroui/system': 2.4.12(@heroui/theme@2.4.12)(framer-motion@12.5.0)(react-dom@19.0.0)(react@19.0.0)
+      '@heroui/theme': 2.4.12(tailwindcss@3.4.17)
+      '@heroui/use-is-mounted': 2.1.8(react@19.0.0)
+      '@react-aria/progress': 3.4.26(react-dom@19.0.0)(react@19.0.0)
+      '@react-types/progress': 3.5.15(react@19.0.0)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+    dev: false
+
   /@heroui/radio@2.3.15(@heroui/system@2.4.12)(@heroui/theme@2.4.12)(react-dom@19.0.0)(react@19.0.0):
     resolution: {integrity: sha512-rFUTWwapuB3prIl8z5v9TXlQ5hQYJO3FZMIELYh2H81G5UNghoPDyfUhoDBqWUuX6lHuR/cfzTaB1YwKWGGddw==}
     peerDependencies:
@@ -2325,6 +2369,14 @@ packages:
       framer-motion: 12.5.0(react-dom@19.0.0)(react@19.0.0)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
+    dev: false
+
+  /@heroui/shared-icons@2.1.10(react@19.0.0):
+    resolution: {integrity: sha512-ePo60GjEpM0SEyZBGOeySsLueNDCqLsVL79Fq+5BphzlrBAcaKY7kUp74964ImtkXvknTxAWzuuTr3kCRqj6jg==}
+    peerDependencies:
+      react: '>=18 || >=19.0.0-rc.0'
+    dependencies:
+      react: 19.0.0
     dev: false
 
   /@heroui/shared-icons@2.1.6(react@19.0.0):
@@ -2909,6 +2961,14 @@ packages:
       react: 19.0.0
     dev: false
 
+  /@heroui/use-is-mounted@2.1.8(react@19.0.0):
+    resolution: {integrity: sha512-DO/Th1vD4Uy8KGhd17oGlNA4wtdg91dzga+VMpmt94gSZe1WjsangFwoUBxF2uhlzwensCX9voye3kerP/lskg==}
+    peerDependencies:
+      react: '>=18 || >=19.0.0-rc.0'
+    dependencies:
+      react: 19.0.0
+    dev: false
+
   /@heroui/use-measure@2.1.6(react@19.0.0):
     resolution: {integrity: sha512-FiN3Za6hExqU1B0d2drCm9JUFneQ1W5gyNoX0owf3aIWG98QR+LR1MOL3WBAGWtDsp4K6q8rqUKXatNxGJd/sA==}
     peerDependencies:
@@ -3061,6 +3121,12 @@ packages:
       '@swc/helpers': 0.5.15
     dev: false
 
+  /@internationalized/date@3.9.0:
+    resolution: {integrity: sha512-yaN3brAnHRD+4KyyOsJyk49XUvj2wtbNACSqg0bz3u8t2VuzhC8Q5dfRnrSxjnnbDb+ienBnkn1TzQfE154vyg==}
+    dependencies:
+      '@swc/helpers': 0.5.15
+    dev: false
+
   /@internationalized/message@3.1.6:
     resolution: {integrity: sha512-JxbK3iAcTIeNr1p0WIFg/wQJjIzJt9l/2KNY/48vXV7GRGZSv3zMxJsce008fZclk2cDC8y0Ig3odceHO7EfNQ==}
     dependencies:
@@ -3083,6 +3149,12 @@ packages:
 
   /@internationalized/number@3.6.3:
     resolution: {integrity: sha512-p+Zh1sb6EfrfVaS86jlHGQ9HA66fJhV9x5LiE5vCbZtXEHAuhcmUZUdZ4WrFpUBfNalr2OkAJI5AcKEQF+Lebw==}
+    dependencies:
+      '@swc/helpers': 0.5.15
+    dev: false
+
+  /@internationalized/number@3.6.5:
+    resolution: {integrity: sha512-6hY4Kl4HPBvtfS62asS/R22JzNNy8vi/Ssev7x6EobfCp+9QIB2hKvI2EtbdJ0VSQacxVNtqhE/NmF/NZ0gm6g==}
     dependencies:
       '@swc/helpers': 0.5.15
     dev: false
@@ -3644,6 +3716,24 @@ packages:
       react-dom: 19.0.0(react@19.0.0)
     dev: false
 
+  /@react-aria/i18n@3.12.12(react-dom@19.0.0)(react@19.0.0):
+    resolution: {integrity: sha512-JN6p+Xc6Pu/qddGRoeYY6ARsrk2Oz7UiQc9nLEPOt3Ch+blJZKWwDjcpo/p6/wVZdD/2BgXS7El6q6+eMg7ibw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+    dependencies:
+      '@internationalized/date': 3.9.0
+      '@internationalized/message': 3.1.8
+      '@internationalized/number': 3.6.5
+      '@internationalized/string': 3.2.7
+      '@react-aria/ssr': 3.9.10(react@19.0.0)
+      '@react-aria/utils': 3.30.1(react-dom@19.0.0)(react@19.0.0)
+      '@react-types/shared': 3.32.0(react@19.0.0)
+      '@swc/helpers': 0.5.15
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+    dev: false
+
   /@react-aria/i18n@3.12.6(react-dom@19.0.0)(react@19.0.0):
     resolution: {integrity: sha512-I2Qz1vAlgdeW2GUMLhHucYhk514/BRuEzvH1iih8qeqvv0gEbKdSIjPJUomW+WzYVmJ2/bwKQAr7otr2fNcbrw==}
     peerDependencies:
@@ -3774,6 +3864,19 @@ packages:
     dependencies:
       '@react-aria/utils': 3.29.1(react-dom@19.0.0)(react@19.0.0)
       '@react-types/shared': 3.30.0(react@19.0.0)
+      '@swc/helpers': 0.5.15
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+    dev: false
+
+  /@react-aria/label@3.7.21(react-dom@19.0.0)(react@19.0.0):
+    resolution: {integrity: sha512-8G+059/GZahgQbrhMcCcVcrjm7W+pfzrypH/Qkjo7C1yqPGt6geeFwWeOIbiUZoI0HD9t9QvQPryd6m46UC7Tg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+    dependencies:
+      '@react-aria/utils': 3.30.1(react-dom@19.0.0)(react@19.0.0)
+      '@react-types/shared': 3.32.0(react@19.0.0)
       '@swc/helpers': 0.5.15
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
@@ -4016,6 +4119,22 @@ packages:
       '@react-aria/utils': 3.28.1(react-dom@19.0.0)(react@19.0.0)
       '@react-types/progress': 3.5.10(react@19.0.0)
       '@react-types/shared': 3.28.0(react@19.0.0)
+      '@swc/helpers': 0.5.15
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+    dev: false
+
+  /@react-aria/progress@3.4.26(react-dom@19.0.0)(react@19.0.0):
+    resolution: {integrity: sha512-EJBzbE0IjXrJ19ofSyNKDnqC70flUM0Z+9heMRPLi6Uz01o6Uuz9tjyzmoPnd9Q1jnTT7dCl7ydhdYTGsWFcUg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+    dependencies:
+      '@react-aria/i18n': 3.12.12(react-dom@19.0.0)(react@19.0.0)
+      '@react-aria/label': 3.7.21(react-dom@19.0.0)(react@19.0.0)
+      '@react-aria/utils': 3.30.1(react-dom@19.0.0)(react@19.0.0)
+      '@react-types/progress': 3.5.15(react@19.0.0)
+      '@react-types/shared': 3.32.0(react@19.0.0)
       '@swc/helpers': 0.5.15
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
@@ -5017,6 +5136,15 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
     dependencies:
       '@react-types/shared': 3.28.0(react@19.0.0)
+      react: 19.0.0
+    dev: false
+
+  /@react-types/progress@3.5.15(react@19.0.0):
+    resolution: {integrity: sha512-3SYvEyRt7vq7w0sc6wBYmkPqLMZbhH8FI3Lrnn9r3y8+69/efRjVmmJvwjm1z+c6rukszc2gCjUGTsMPQxVk2w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+    dependencies:
+      '@react-types/shared': 3.32.0(react@19.0.0)
       react: 19.0.0
     dev: false
 
