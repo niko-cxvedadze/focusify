@@ -10,8 +10,27 @@ const _schema = i.schema({
     $users: i.entity({
       email: i.string().unique().indexed().optional()
     }),
+    projects: i.entity({
+      description: i.string().optional(),
+      hourlyRate: i.number().optional(),
+      ownerId: i.string().indexed(),
+      title: i.string()
+    })
   },
-  links: {},
+  links: {
+    projectsOwner: {
+      forward: {
+        on: 'projects',
+        has: 'one',
+        label: 'owner'
+      },
+      reverse: {
+        on: '$users',
+        has: 'many',
+        label: 'projects'
+      }
+    }
+  },
   rooms: {}
 })
 
