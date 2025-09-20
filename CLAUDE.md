@@ -59,3 +59,44 @@ For create buttons (like "New Project", "Add Item", etc.):
     return <Button className="custom-styles" {...props}>{children}</Button>
   }
   ```
+
+# Form Field Labels Convention
+
+Use the custom `FormLabel` component from `@/components/ui/form-label` to automatically handle optional field indicators:
+
+- **Required fields**: Use `<FormLabel required>Field Name</FormLabel>` (no visual indicator)
+- **Optional fields**: Use `<FormLabel optional>Field Name</FormLabel>` (shows gray "(optional)")
+- **Regular fields** (neither required nor optional): Use `<FormLabel>Field Name</FormLabel>`
+- Example:
+```tsx
+import { FormLabel } from '@/components/ui/form-label'
+
+// Required field - no visual indicator
+<FormLabel required>Title</FormLabel>
+
+// Optional field - shows gray "(optional)" automatically
+<FormLabel optional>Description</FormLabel>
+
+// Regular field - no indicator
+<FormLabel>Status</FormLabel>
+```
+
+This eliminates code repetition and ensures consistent styling across all forms.
+
+# Dialog Button Sizing Convention
+
+Always use `size="sm"` for submit and cancel buttons in dialogs:
+
+- **Submit buttons**: Use `<Button type="submit" size="sm">Submit Text</Button>`
+- **Cancel buttons**: Use `<Button type="button" variant="outline" size="sm">Cancel</Button>`
+- Example:
+```tsx
+<div className="flex justify-end space-x-2">
+  <Button type="button" variant="outline" size="sm" onClick={() => setOpen(false)}>
+    Cancel
+  </Button>
+  <Button type="submit" size="sm">Create Project</Button>
+</div>
+```
+
+This ensures consistent sizing and proper visual hierarchy in dialog actions.
