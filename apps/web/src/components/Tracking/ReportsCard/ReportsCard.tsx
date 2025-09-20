@@ -1,11 +1,26 @@
 import React from 'react'
 
-import { Project } from '@repo/types'
-import { Calendar, Clock, Plus } from 'lucide-react'
+import { Project, ReportedTime } from '@repo/types'
+import {
+  Calendar,
+  ChevronDown,
+  ChevronRight,
+  Edit,
+  MoreHorizontal,
+  Plus,
+  Trash2
+} from 'lucide-react'
 
 import { ReportDialog } from '@/components/Reports/ReportDialog'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { PageHeader } from '@/components/PageHeader/PageHeader'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 import {
   Select,
   SelectContent,
@@ -16,18 +31,158 @@ import {
 
 import { formatTime } from '@/lib/time'
 
+import { useReportsMutation } from '@/hooks/mutations/useReportsMutation'
 import { useReportedTimesQuery } from '@/hooks/queries/useReportedTimesQuery'
 
-type FilterPeriod = 'week' | 'semimonth' | 'month' | 'quarter' | 'year' | 'all'
+type FilterPeriod = 'today' | 'week' | 'semimonth' | 'month' | 'quarter' | 'year' | 'all'
 
-interface ReportsCardProps {
+interface ProjectReportsProps {
   project: Project
 }
 
-export function ReportsCard({ project }: ReportsCardProps) {
-  const [filterPeriod, setFilterPeriod] = React.useState<FilterPeriod>('all')
+// Individual Report Record Component
+interface ReportRecordProps {
+  report: ReportedTime
+  index: number
+  totalReports: number
+  onEdit: (report: ReportedTime) => void
+  onDelete: (report: ReportedTime) => void
+}
+
+function ReportRecord({ report, index, totalReports, onEdit, onDelete }: ReportRecordProps) {
+  return (
+    <div
+      key={report.id}
+      className={`flex items-center justify-between p-3 hover:bg-muted/30 ${
+        index !== totalReports - 1 ? 'border-b' : ''
+      }`}
+    >
+      <div className="flex items-center gap-3">
+        <div className="flex flex-col">
+          <div className="font-mono text-sm font-medium">{formatTime(report.duration)}</div>
+          {report.timerId ? (
+            <div className="text-xs text-muted-foreground">From timer</div>
+          ) : (
+            <div className="text-xs text-muted-foreground">Manual entry</div>
+          )}
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        {report.hourlyRate && (
+          <div className="font-mono text-sm text-green-600 font-medium">
+            ${((report.duration / (1000 * 60 * 60)) * report.hourlyRate).toFixed(2)}
+          </div>
+        )}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => onEdit(report)}>
+              <Edit className="mr-2 h-4 w-4" />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => onDelete(report)}
+              className="text-destructive focus:text-destructive"
+            >
+              <Trash2 className="mr-2 h-4 w-4 text-destructive" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </div>
+  )
+}
+
+// Day Section Component
+interface DaySectionProps {
+  date: string
+  reports: ReportedTime[]
+  isExpanded: boolean
+  onToggleExpanded: (date: string) => void
+  onEditReport: (report: ReportedTime) => void
+  onDeleteReport: (report: ReportedTime) => void
+  getTotalTimeForDate: (reports: ReportedTime[]) => number
+  getTotalEarningsForDate: (reports: ReportedTime[]) => number
+}
+
+function DaySection({
+  date,
+  reports,
+  isExpanded,
+  onToggleExpanded,
+  onEditReport,
+  onDeleteReport,
+  getTotalTimeForDate,
+  getTotalEarningsForDate
+}: DaySectionProps) {
+  return (
+    <div className="border rounded-lg bg-muted/50">
+      {/* Day Header - Clickable to expand/collapse */}
+      <div
+        className="flex items-center justify-between p-3 cursor-pointer hover:bg-muted/70 transition-colors"
+        onClick={() => onToggleExpanded(date)}
+      >
+        <div className="flex items-center gap-2">
+          {isExpanded ? (
+            <ChevronDown className="h-4 w-4 text-muted-foreground" />
+          ) : (
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          )}
+          <Calendar className="h-4 w-4 text-muted-foreground" />
+          <span className="font-medium">
+            {new Date(date + 'T00:00:00').toLocaleDateString('en-US', {
+              weekday: 'short',
+              month: 'short',
+              day: 'numeric'
+            })}
+          </span>
+          <span className="text-sm text-muted-foreground">
+            ({reports.length} session{reports.length !== 1 ? 's' : ''})
+          </span>
+        </div>
+        <div className="text-right">
+          <div className="font-mono font-semibold">{formatTime(getTotalTimeForDate(reports))}</div>
+          {(() => {
+            const earnings = getTotalEarningsForDate(reports)
+            return earnings > 0 ? (
+              <div className="font-mono text-green-600 font-semibold">${earnings.toFixed(2)}</div>
+            ) : null
+          })()}
+        </div>
+      </div>
+
+      {/* Individual Reports - Show when expanded */}
+      {isExpanded && (
+        <div className="border-t bg-background/50">
+          {reports.map((report, index) => (
+            <ReportRecord
+              key={report.id}
+              report={report}
+              index={index}
+              totalReports={reports.length}
+              onEdit={onEditReport}
+              onDelete={onDeleteReport}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export function ProjectReports({ project }: ProjectReportsProps) {
+  const [filterPeriod, setFilterPeriod] = React.useState<FilterPeriod>('week')
   const [showReportDialog, setShowReportDialog] = React.useState(false)
+  const [expandedDays, setExpandedDays] = React.useState<Set<string>>(new Set())
+  const [editingReport, setEditingReport] = React.useState<ReportedTime | null>(null)
+  const [deletingReport, setDeletingReport] = React.useState<ReportedTime | null>(null)
   const { reportedTimes, isLoading } = useReportedTimesQuery(project.id)
+  const { deleteReport } = useReportsMutation()
 
   // Filter reported times based on selected period
   const filteredReports = React.useMemo(() => {
@@ -38,6 +193,9 @@ export function ReportsCard({ project }: ReportsCardProps) {
 
     const getFilterDate = () => {
       switch (filterPeriod) {
+        case 'today': {
+          return today
+        }
         case 'week': {
           const weekStart = new Date(today)
           const dayOfWeek = today.getDay()
@@ -138,6 +296,9 @@ export function ReportsCard({ project }: ReportsCardProps) {
     }
 
     switch (filterPeriod) {
+      case 'today': {
+        return formatDate(today)
+      }
       case 'week': {
         const weekStart = new Date(today)
         const dayOfWeek = today.getDay()
@@ -177,114 +338,126 @@ export function ReportsCard({ project }: ReportsCardProps) {
     }
   }, [filterPeriod])
 
+  // Handler functions
+  const toggleDayExpanded = (date: string) => {
+    const newExpandedDays = new Set(expandedDays)
+    if (newExpandedDays.has(date)) {
+      newExpandedDays.delete(date)
+    } else {
+      newExpandedDays.add(date)
+    }
+    setExpandedDays(newExpandedDays)
+  }
+
+  const handleEditReport = (report: ReportedTime) => {
+    setEditingReport(report)
+    setShowReportDialog(true)
+  }
+
+  const handleDeleteClick = (report: ReportedTime) => {
+    setDeletingReport(report)
+  }
+
+  const handleDeleteConfirm = async () => {
+    if (!deletingReport) return
+    try {
+      await deleteReport(deletingReport.id)
+      setDeletingReport(null)
+    } catch (error) {
+      console.error('Failed to delete report:', error)
+    }
+  }
+
+  const handleCloseDialog = () => {
+    setShowReportDialog(false)
+    setEditingReport(null)
+  }
+
   if (isLoading) {
     return (
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
-            Time Reports
-          </CardTitle>
-          <CardDescription>Loading reported times...</CardDescription>
-        </CardHeader>
-      </Card>
+      <div className="space-y-4">
+        <PageHeader title={project.title} description="Loading reported times..." />
+      </div>
     )
   }
 
+  const headerTitle = `${project.title}${getDateRange ? ` (${getDateRange})` : ''}`
+
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              <Clock className="h-5 w-5" />
-              Time Reports
-              {getDateRange && (
-                <span className="text-sm font-normal text-muted-foreground ml-2">
-                  ({getDateRange})
-                </span>
-              )}
-            </CardTitle>
-            <CardDescription className="mt-2">
-              <div className="flex items-center gap-4">
-                <span>Total: {formatTime(overallTotal)}</span>
-                {overallEarnings > 0 && (
-                  <span className="text-green-600 font-bold text-xl">
-                    ${overallEarnings.toFixed(2)}
-                  </span>
-                )}
-              </div>
-            </CardDescription>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button size="sm" onClick={() => setShowReportDialog(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Report
-            </Button>
-            <Select
-              value={filterPeriod}
-              onValueChange={(value: FilterPeriod) => setFilterPeriod(value)}
-            >
-              <SelectTrigger className="w-[140px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Time</SelectItem>
-                <SelectItem value="week">This Week</SelectItem>
-                <SelectItem value="semimonth">Semi-month</SelectItem>
-                <SelectItem value="month">This Month</SelectItem>
-                <SelectItem value="quarter">This Quarter</SelectItem>
-                <SelectItem value="year">This Year</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <div className="space-y-4">
+      <PageHeader title={headerTitle}>
+        <Button size="sm" onClick={() => setShowReportDialog(true)}>
+          <Plus className="mr-2 h-4 w-4" />
+          Add Report
+        </Button>
+        <Select
+          value={filterPeriod}
+          onValueChange={(value: FilterPeriod) => setFilterPeriod(value)}
+        >
+          <SelectTrigger className="w-[140px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Time</SelectItem>
+            <SelectItem value="today">Today</SelectItem>
+            <SelectItem value="week">This Week</SelectItem>
+            <SelectItem value="semimonth">Semi-month</SelectItem>
+            <SelectItem value="month">This Month</SelectItem>
+            <SelectItem value="quarter">This Quarter</SelectItem>
+            <SelectItem value="year">This Year</SelectItem>
+          </SelectContent>
+        </Select>
+      </PageHeader>
+
+      <div className="flex items-center gap-4 text-sm text-muted-foreground border-b pb-2">
+        <span className="font-medium">Total: {formatTime(overallTotal)}</span>
+        {overallEarnings > 0 && (
+          <span className="text-green-600 font-bold text-base">
+            ${overallEarnings.toFixed(2)}
+          </span>
+        )}
+      </div>
+
+      <div className="space-y-2">
         {groupedReports.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
             No time reports yet. Start tracking your work!
           </div>
         ) : (
-          <div className="space-y-3 max-h-64 overflow-y-auto">
+          <div className="space-y-2 max-h-96 overflow-y-auto">
             {groupedReports.map(([date, reports]) => (
-              <div
+              <DaySection
                 key={date}
-                className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
-              >
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-medium">
-                    {new Date(date + 'T00:00:00').toLocaleDateString('en-US', {
-                      weekday: 'short',
-                      month: 'short',
-                      day: 'numeric'
-                    })}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    ({reports.length} session{reports.length !== 1 ? 's' : ''})
-                  </span>
-                </div>
-                <div className="text-right">
-                  <div className="font-mono font-semibold">
-                    {formatTime(getTotalTimeForDate(reports))}
-                  </div>
-                  {(() => {
-                    const earnings = getTotalEarningsForDate(reports)
-                    return earnings > 0 ? (
-                      <div className="text-base text-green-600 font-semibold">
-                        ${earnings.toFixed(2)}
-                      </div>
-                    ) : null
-                  })()}
-                </div>
-              </div>
+                date={date}
+                reports={reports}
+                isExpanded={expandedDays.has(date)}
+                onToggleExpanded={toggleDayExpanded}
+                onEditReport={handleEditReport}
+                onDeleteReport={handleDeleteClick}
+                getTotalTimeForDate={getTotalTimeForDate}
+                getTotalEarningsForDate={getTotalEarningsForDate}
+              />
             ))}
           </div>
         )}
-      </CardContent>
+      </div>
 
-      <ReportDialog open={showReportDialog} onOpenChange={setShowReportDialog} project={project} />
-    </Card>
+      <ReportDialog
+        open={showReportDialog}
+        onOpenChange={handleCloseDialog}
+        project={project}
+        editingReport={editingReport}
+      />
+
+      <ConfirmDialog
+        open={!!deletingReport}
+        onOpenChange={(open) => !open && setDeletingReport(null)}
+        onSubmit={handleDeleteConfirm}
+        title="Delete Report?"
+        description={`Are you sure you want to delete this ${deletingReport?.duration ? formatTime(deletingReport.duration) : ''} report? This action cannot be undone.`}
+        submitText="Delete"
+        cancelText="Cancel"
+      />
+    </div>
   )
 }

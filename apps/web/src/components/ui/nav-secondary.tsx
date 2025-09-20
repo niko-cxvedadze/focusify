@@ -1,7 +1,7 @@
 "use client"
 
 import { type LucideIcon } from "lucide-react"
-import { useLocation } from "react-router"
+import { Link, useLocation } from "react-router"
 
 import {
   SidebarGroup,
@@ -32,10 +32,10 @@ export function NavSecondary({
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild size="sm" isActive={isActive}>
-                  <a href={item.url}>
+                  <Link to={item.url}>
                     <item.icon />
                     <span>{item.title}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             )

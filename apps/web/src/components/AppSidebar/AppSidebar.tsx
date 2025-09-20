@@ -1,89 +1,72 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import {
-  Home,
-  Target,
-  BookOpen,
-  Focus,
-  Settings,
-  FolderOpen,
-  Clock,
-} from "lucide-react"
-import { NavMain } from "@/components/ui/nav-main"
-import { NavSecondary } from "@/components/ui/nav-secondary"
-import { NavUser } from "@/components/ui/nav-user"
-import { TeamSwitcher } from "@/components/ui/team-switcher"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar"
+import * as React from 'react'
+
+import { BarChart3, BookOpen, Clock, Focus, FolderOpen, Settings, Target } from 'lucide-react'
+
+import { NavMain } from '@/components/ui/nav-main'
+import { NavSecondary } from '@/components/ui/nav-secondary'
+import { NavUser } from '@/components/ui/nav-user'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarRail } from '@/components/ui/sidebar'
 
 // Focusify app data
 const data = {
   user: {
-    name: "Focusify User",
-    email: "user@focusify.app",
-    avatar: "/avatars/user.jpg",
+    name: 'Focusify User',
+    email: 'user@focusify.app',
+    avatar: '/avatars/user.jpg'
   },
   teams: [
     {
-      name: "Focusify",
+      name: 'Focusify',
       logo: Focus,
-      plan: "Pro",
+      plan: 'Pro'
     },
     {
-      name: "Personal",
+      name: 'Personal',
       logo: Target,
-      plan: "Free",
-    },
+      plan: 'Free'
+    }
   ],
   navMain: [
     {
-      title: "Dashboard",
-      url: "/",
-      icon: Home,
-      isActive: true,
+      title: 'Projects',
+      url: '/projects',
+      icon: FolderOpen
     },
     {
-      title: "Projects",
-      url: "/projects",
-      icon: FolderOpen,
+      title: 'Tracking',
+      url: '/tracking',
+      icon: Clock
     },
     {
-      title: "Tracking",
-      url: "/tracking",
-      icon: Clock,
-    },
+      title: 'Reports',
+      url: '/reports',
+      icon: BarChart3
+    }
   ],
   navSecondary: [
     {
-      title: "Settings",
-      url: "/settings",
-      icon: Settings,
+      title: 'Settings',
+      url: '/settings',
+      icon: Settings
     },
     {
-      title: "Support",
-      url: "/support",
-      icon: BookOpen,
+      title: 'Support',
+      url: '/support',
+      icon: BookOpen
     },
     {
-      title: "Feedback",
-      url: "/feedback",
-      icon: Target,
-    },
-  ],
+      title: 'Feedback',
+      url: '/feedback',
+      icon: Target
+    }
+  ]
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
-      </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>

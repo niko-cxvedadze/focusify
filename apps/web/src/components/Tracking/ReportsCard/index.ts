@@ -1,1 +1,1 @@
-export { ReportsCard } from './ReportsCard'
+export { ProjectReports } from './ReportsCard'

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Project, ReportForm } from '@repo/types'
+import { Project, ReportForm, ReportedTime } from '@repo/types'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -22,12 +22,13 @@ import { Input } from '@/components/ui/input'
 import { FormLabel } from '@/components/ui/form-label'
 import { TimeInput } from '@/components/Form'
 
-import { useReportsMutation } from '@/hooks/mutations/useReportsMutation'
+import { useReportsMutation, millisecondsToTime } from '@/hooks/mutations/useReportsMutation'
 
 interface ReportDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   project: Project
+  editingReport?: ReportedTime | null
   onSuccess?: () => void
 }
 
@@ -35,20 +36,31 @@ export function ReportDialog({
   open,
   onOpenChange,
   project,
+  editingReport,
   onSuccess
 }: ReportDialogProps) {
-  const { form, isLoading, handleFormSubmit } = useReportsMutation()
+  const { form, isLoading, handleFormSubmit } = useReportsMutation(editingReport || undefined)
 
   // Set default values when dialog opens
   React.useEffect(() => {
     if (open) {
-      form.reset({
-        reportedAt: new Date().toISOString().split('T')[0],
-        time: '01:00',
-        hourlyRate: project.hourlyRate || undefined
-      })
+      if (editingReport) {
+        // Edit mode - populate with existing report data
+        form.reset({
+          reportedAt: editingReport.reportedAt,
+          time: millisecondsToTime(editingReport.duration),
+          hourlyRate: editingReport.hourlyRate || undefined
+        })
+      } else {
+        // Create mode - use default values
+        form.reset({
+          reportedAt: new Date().toISOString().split('T')[0],
+          time: '01:00',
+          hourlyRate: project.hourlyRate || undefined
+        })
+      }
     }
-  }, [open, form, project.hourlyRate])
+  }, [open, form, project.hourlyRate, editingReport])
 
   const handleSubmit = async (data: ReportForm) => {
     try {
@@ -77,9 +89,14 @@ export function ReportDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Manual Report</DialogTitle>
+          <DialogTitle>
+            {editingReport ? 'Edit Report' : 'Add Manual Report'}
+          </DialogTitle>
           <DialogDescription>
-            Manually add a time report for {project.title}
+            {editingReport
+              ? `Edit time report for ${project.title}`
+              : `Manually add a time report for ${project.title}`
+            }
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -139,7 +156,7 @@ export function ReportDialog({
                 Cancel
               </Button>
               <Button type="submit" size="sm" disabled={isLoading}>
-                Add Report
+                {editingReport ? 'Update Report' : 'Add Report'}
               </Button>
             </DialogFooter>
           </form>
