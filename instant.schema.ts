@@ -29,6 +29,8 @@ const _schema = i.schema({
       projectId: i.string().indexed(),
       ownerId: i.string().indexed(),
       startedAt: i.number(), // Unix timestamp in milliseconds when timer started
+      pausedAt: i.number().optional(), // Unix timestamp in milliseconds when timer was paused (null if not paused)
+      totalPausedTime: i.number().optional(), // Total time paused in milliseconds
       finishedAt: i.number().optional(), // Unix timestamp in milliseconds when timer finished (null if still running)
       createdAt: i.number() // Unix timestamp in milliseconds when record was created
     })

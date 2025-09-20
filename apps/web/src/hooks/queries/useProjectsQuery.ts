@@ -9,3 +9,15 @@ export function useProjectsQuery() {
     error
   }
 }
+
+export async function getProjectById(projectId: string) {
+  const { data } = await db.queryOnce({
+    projects: {
+      $: {
+        where: { id: projectId }
+      }
+    }
+  })
+
+  return data?.projects?.[0] || null
+}

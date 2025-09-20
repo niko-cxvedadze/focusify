@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Project } from '@repo/types'
-import { Clock, Calendar } from 'lucide-react'
+import { Calendar, Clock } from 'lucide-react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select'
 
 import { formatTime } from '@/lib/time'
+
 import { useReportedTimesQuery } from '@/hooks/queries/useReportedTimesQuery'
 
 type FilterPeriod = 'week' | 'semimonth' | 'month' | 'quarter' | 'year' | 'all'
@@ -43,7 +44,11 @@ export function ReportsCard({ project }: ReportsCardProps) {
           return weekStart
         }
         case 'semimonth': {
-          const semiStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() <= 15 ? 1 : 16)
+          const semiStart = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate() <= 15 ? 1 : 16
+          )
           return semiStart
         }
         case 'month': {
@@ -64,14 +69,14 @@ export function ReportsCard({ project }: ReportsCardProps) {
     const filterDate = getFilterDate()
     const filterDateString = filterDate.toISOString().split('T')[0]
 
-    return reportedTimes.filter(report => report.reportedAt >= filterDateString)
+    return reportedTimes.filter((report) => report.reportedAt >= filterDateString)
   }, [reportedTimes, filterPeriod])
 
   // Group filtered reported times by date
   const groupedReports = React.useMemo(() => {
     const groups: Record<string, typeof filteredReports> = {}
 
-    filteredReports.forEach(report => {
+    filteredReports.forEach((report) => {
       if (!groups[report.reportedAt]) {
         groups[report.reportedAt] = []
       }
@@ -90,9 +95,9 @@ export function ReportsCard({ project }: ReportsCardProps) {
   // Calculate total earnings for a date
   const getTotalEarningsForDate = (reports: typeof reportedTimes) => {
     return reports.reduce((total, report) => {
-      if (report.hourlyRate) {
+      if (report.hourlyRate && report.hourlyRate > 0) {
         const hours = report.duration / (1000 * 60 * 60) // Convert milliseconds to hours
-        return total + (hours * report.hourlyRate)
+        return total + hours * report.hourlyRate
       }
       return total
     }, 0)
@@ -106,9 +111,9 @@ export function ReportsCard({ project }: ReportsCardProps) {
   // Calculate overall earnings for filtered data
   const overallEarnings = React.useMemo(() => {
     return filteredReports.reduce((total, report) => {
-      if (report.hourlyRate) {
+      if (report.hourlyRate && report.hourlyRate > 0) {
         const hours = report.duration / (1000 * 60 * 60) // Convert milliseconds to hours
-        return total + (hours * report.hourlyRate)
+        return total + hours * report.hourlyRate
       }
       return total
     }, 0)
@@ -191,20 +196,27 @@ export function ReportsCard({ project }: ReportsCardProps) {
             <CardTitle className="flex items-center gap-2">
               <Clock className="h-5 w-5" />
               Time Reports
-              {getDateRange && <span className="text-sm font-normal text-muted-foreground ml-2">({getDateRange})</span>}
+              {getDateRange && (
+                <span className="text-sm font-normal text-muted-foreground ml-2">
+                  ({getDateRange})
+                </span>
+              )}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="mt-2">
               <div className="flex items-center gap-4">
                 <span>Total: {formatTime(overallTotal)}</span>
                 {overallEarnings > 0 && (
-                  <span className="text-green-600 font-semibold text-base">
+                  <span className="text-green-600 font-bold text-xl">
                     ${overallEarnings.toFixed(2)}
                   </span>
                 )}
               </div>
             </CardDescription>
           </div>
-          <Select value={filterPeriod} onValueChange={(value: FilterPeriod) => setFilterPeriod(value)}>
+          <Select
+            value={filterPeriod}
+            onValueChange={(value: FilterPeriod) => setFilterPeriod(value)}
+          >
             <SelectTrigger className="w-[140px]">
               <SelectValue />
             </SelectTrigger>
@@ -222,12 +234,15 @@ export function ReportsCard({ project }: ReportsCardProps) {
       <CardContent className="space-y-4">
         {groupedReports.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
-            No time reports yet. Start a timer to track your work!
+            No time reports yet. Start tracking your work!
           </div>
         ) : (
           <div className="space-y-3 max-h-64 overflow-y-auto">
             {groupedReports.map(([date, reports]) => (
-              <div key={date} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+              <div
+                key={date}
+                className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
+              >
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <span className="font-medium">
@@ -245,11 +260,14 @@ export function ReportsCard({ project }: ReportsCardProps) {
                   <div className="font-mono font-semibold">
                     {formatTime(getTotalTimeForDate(reports))}
                   </div>
-                  {getTotalEarningsForDate(reports) > 0 && (
-                    <div className="text-sm text-green-600 font-medium">
-                      ${getTotalEarningsForDate(reports).toFixed(2)}
-                    </div>
-                  )}
+                  {(() => {
+                    const earnings = getTotalEarningsForDate(reports)
+                    return earnings > 0 ? (
+                      <div className="text-base text-green-600 font-semibold">
+                        ${earnings.toFixed(2)}
+                      </div>
+                    ) : null
+                  })()}
                 </div>
               </div>
             ))}

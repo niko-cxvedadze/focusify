@@ -1,11 +1,12 @@
 import { db } from '@/lib/instant'
 
 export function useReportedTimesQuery(projectId?: string) {
-  const query = projectId
-    ? { reportedTimes: { $: { where: { projectId } } } }
-    : { reportedTimes: {} }
-
-  const { data, isLoading, error } = db.useQuery(query)
+  // Use two different query structures to avoid TypeScript issues
+  const { data, isLoading, error } = projectId
+    ? db.useQuery({ reportedTimes: { $: { where: { projectId: projectId } } } })
+    : db.useQuery({
+        reportedTimes: {}
+      })
 
   return {
     reportedTimes: data?.reportedTimes ?? [],

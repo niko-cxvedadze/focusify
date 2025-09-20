@@ -3,8 +3,8 @@ import React from 'react'
 import { useNavigate, useParams } from 'react-router'
 
 import { PageHeader } from '@/components/PageHeader'
-import { TimerCard } from '@/components/Tracking/TimerCard'
 import { ReportsCard } from '@/components/Tracking/ReportsCard'
+import { TimerCard } from '@/components/Tracking/TimerCard'
 import {
   Select,
   SelectContent,
@@ -56,10 +56,12 @@ export function TrackingView() {
       </PageHeader>
 
       {/* Timer and Reports Section */}
-      <div className="space-y-6">
-        <div className="grid gap-6 md:grid-cols-2">
-          {selectedProject && <TimerCard project={selectedProject} />}
-        </div>
+      <div className="space-y-4">
+        {selectedProject && (
+          <div className="w-full">
+            <TimerCard project={selectedProject} />
+          </div>
+        )}
 
         {selectedProject && (
           <div className="w-full">

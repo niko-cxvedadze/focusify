@@ -1,22 +1,32 @@
-import { Timer } from '@repo/types'
-
 import { db } from '@/lib/instant'
 
 export function useTimersQuery() {
   const { data, isLoading, error } = db.useQuery({
     timers: {
-      project: {},
-      owner: {}
+      $: {
+        where: { finishedAt: { $isNull: true } }
+      }
     }
   })
 
-  // Get active timer (one that hasn't been finished)
-  const activeTimer = data?.timers?.find((timer: Timer) => timer.finishedAt === null || timer.finishedAt === undefined)
+  const activeTimer = data?.timers?.[0] || undefined
 
   return {
-    timers: data?.timers || [],
     activeTimer,
+    timers: data?.timers ?? [],
     isLoading,
     error
   }
+}
+
+export async function getTimerById(timerId: string) {
+  const { data } = await db.queryOnce({
+    timers: {
+      $: {
+        where: { id: timerId }
+      }
+    }
+  })
+
+  return data?.timers?.[0] || null
 }
