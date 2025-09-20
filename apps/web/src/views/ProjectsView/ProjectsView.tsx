@@ -7,18 +7,15 @@ import { Button } from '@/components/ui/button'
 const projects = [
   {
     title: 'Work Focus',
-    description: 'Focus on work-related tasks and improve productivity during work hours.',
-    color: 'blue' as const
+    description: 'Focus on work-related tasks and improve productivity during work hours.'
   },
   {
     title: 'Personal Growth',
-    description: 'Personal development goals and habits to build a better lifestyle.',
-    color: 'green' as const
+    description: 'Personal development goals and habits to build a better lifestyle.'
   },
   {
     title: 'Learning',
-    description: 'Continuous learning and skill development in various areas of interest.',
-    color: 'purple' as const
+    description: 'Continuous learning and skill development in various areas of interest.'
   }
 ]
 
@@ -36,7 +33,7 @@ export function ProjectsView() {
         <CreateProjectDialog
           trigger={
             <Button size={'sm'}>
-              <Plus className="mr-2 h-4 w-4" />
+              <Plus className="h-4 w-4" />
               New Project
             </Button>
           }
@@ -50,7 +47,6 @@ export function ProjectsView() {
             key={project.title}
             title={project.title}
             description={project.description}
-            color={project.color}
           />
         ))}
       </div>
