@@ -1,8 +1,10 @@
 import React from 'react'
 
 import { Project } from '@repo/types'
-import { Calendar, Clock } from 'lucide-react'
+import { Calendar, Clock, Plus } from 'lucide-react'
 
+import { ReportDialog } from '@/components/Reports/ReportDialog'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Select,
@@ -24,6 +26,7 @@ interface ReportsCardProps {
 
 export function ReportsCard({ project }: ReportsCardProps) {
   const [filterPeriod, setFilterPeriod] = React.useState<FilterPeriod>('all')
+  const [showReportDialog, setShowReportDialog] = React.useState(false)
   const { reportedTimes, isLoading } = useReportedTimesQuery(project.id)
 
   // Filter reported times based on selected period
@@ -213,22 +216,28 @@ export function ReportsCard({ project }: ReportsCardProps) {
               </div>
             </CardDescription>
           </div>
-          <Select
-            value={filterPeriod}
-            onValueChange={(value: FilterPeriod) => setFilterPeriod(value)}
-          >
-            <SelectTrigger className="w-[140px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Time</SelectItem>
-              <SelectItem value="week">This Week</SelectItem>
-              <SelectItem value="semimonth">Semi-month</SelectItem>
-              <SelectItem value="month">This Month</SelectItem>
-              <SelectItem value="quarter">This Quarter</SelectItem>
-              <SelectItem value="year">This Year</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex items-center gap-2">
+            <Button size="sm" onClick={() => setShowReportDialog(true)}>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Report
+            </Button>
+            <Select
+              value={filterPeriod}
+              onValueChange={(value: FilterPeriod) => setFilterPeriod(value)}
+            >
+              <SelectTrigger className="w-[140px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Time</SelectItem>
+                <SelectItem value="week">This Week</SelectItem>
+                <SelectItem value="semimonth">Semi-month</SelectItem>
+                <SelectItem value="month">This Month</SelectItem>
+                <SelectItem value="quarter">This Quarter</SelectItem>
+                <SelectItem value="year">This Year</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -274,6 +283,8 @@ export function ReportsCard({ project }: ReportsCardProps) {
           </div>
         )}
       </CardContent>
+
+      <ReportDialog open={showReportDialog} onOpenChange={setShowReportDialog} project={project} />
     </Card>
   )
 }

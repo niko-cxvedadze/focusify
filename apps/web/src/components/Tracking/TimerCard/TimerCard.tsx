@@ -1,10 +1,11 @@
 import React from 'react'
 
 import { Project } from '@repo/types'
-import { Clock, Pause, Play, Square } from 'lucide-react'
+import { Pause, Play, Square } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 
 import { formatTime } from '@/lib/time'
 
@@ -17,8 +18,9 @@ interface TimerCardProps {
 
 export function TimerCard({ project }: TimerCardProps) {
   const { activeTimer } = useTimersQuery()
-  const { isLoading, startTimer, stopTimer, pauseTimer, resumeTimer } = useTimersMutation()
   const [elapsedTime, setElapsedTime] = React.useState(0)
+  const [showStopConfirm, setShowStopConfirm] = React.useState(false)
+  const { isLoading, startTimer, stopTimer, pauseTimer, resumeTimer } = useTimersMutation()
 
   // Find timer for this specific project
   const projectTimer = React.useMemo(() => {
@@ -62,7 +64,11 @@ export function TimerCard({ project }: TimerCardProps) {
     }
   }
 
-  const handleStop = async () => {
+  const handleStopClick = () => {
+    setShowStopConfirm(true)
+  }
+
+  const handleStopConfirm = async () => {
     if (!projectTimer) return
 
     try {
@@ -94,79 +100,111 @@ export function TimerCard({ project }: TimerCardProps) {
   }
 
   return (
-    <Card className="w-full">
-      <CardContent>
-        <div className="flex items-center justify-between gap-6">
-          {/* Project Info & Status */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Clock className="h-5 w-5" />
-              <div>
-                <div className="font-semibold">{project.title}</div>
-                <div className="text-sm text-muted-foreground">
-                  {projectTimer
-                    ? projectTimer.pausedAt
-                      ? 'Timer Paused'
-                      : 'Active Timer'
-                    : 'Ready to start'}
+    <>
+      <Card className="w-full">
+        <CardContent>
+          <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-6 items-center">
+            {/* Project Info & Status */}
+            <div>
+              <div className="font-semibold">{project.title}</div>
+              <div className="text-sm text-muted-foreground">
+                {projectTimer
+                  ? projectTimer.pausedAt
+                    ? 'Timer Paused'
+                    : 'Active Timer'
+                  : 'Ready to start'}
+              </div>
+            </div>
+
+            {/* Timer Display */}
+            <div className="flex flex-col items-center justify-center">
+              <div className="text-2xl font-mono font-bold tabular-nums text-center">
+                {projectTimer ? formatTime(elapsedTime) : '00:00:00'}
+              </div>
+              {projectTimer && (
+                <div className="text-xs text-muted-foreground text-center">
+                  {projectTimer.pausedAt
+                    ? `Paused at ${new Date(projectTimer.pausedAt).toLocaleTimeString()}`
+                    : `Started at ${new Date(projectTimer.startedAt).toLocaleTimeString()}`}
                 </div>
-              </div>
+              )}
             </div>
-          </div>
 
-          {/* Timer Display */}
-          <div className="flex flex-col items-center">
-            <div className="text-2xl font-mono font-bold tabular-nums">
-              {projectTimer ? formatTime(elapsedTime) : '00:00:00'}
-            </div>
-            {projectTimer && (
-              <div className="text-xs text-muted-foreground">
-                {projectTimer.pausedAt
-                  ? `Paused at ${new Date(projectTimer.pausedAt).toLocaleTimeString()}`
-                  : `Started at ${new Date(projectTimer.startedAt).toLocaleTimeString()}`}
-              </div>
-            )}
-          </div>
-
-          {/* Earnings Display */}
-          {projectTimer && project.hourlyRate && (
-            <div className="flex flex-col items-center">
-              <div className="text-2xl font-mono font-bold tabular-nums text-green-600">
-                ${((elapsedTime / (1000 * 60 * 60)) * project.hourlyRate).toFixed(2)}
-              </div>
-              <div className="text-xs text-muted-foreground">Current earnings</div>
-            </div>
-          )}
-
-          {/* Timer Controls */}
-          <div className="flex gap-2 flex-row justify-center  items-center">
-            {projectTimer ? (
-              <>
-                {projectTimer.pausedAt ? (
-                  <Button onClick={handleResume} disabled={isLoading} size="sm">
-                    <Play className="mr-1 h-3 w-3" />
-                    Resume
-                  </Button>
+            {/* Earnings Display */}
+            {(projectTimer || project.hourlyRate) && (
+              <div className="flex flex-col items-center justify-center">
+                {projectTimer && project.hourlyRate ? (
+                  <>
+                    <div className="text-2xl font-mono font-bold tabular-nums text-green-600 text-center">
+                      ${((elapsedTime / (1000 * 60 * 60)) * project.hourlyRate).toFixed(2)}
+                    </div>
+                    <div className="text-xs text-muted-foreground text-center">
+                      Current earnings
+                    </div>
+                  </>
                 ) : (
-                  <Button onClick={handlePause} disabled={isLoading} size="sm">
-                    <Pause className="mr-1 h-3 w-3" />
-                    Pause
-                  </Button>
+                  <div className="h-12 w-24" />
                 )}
-                <Button onClick={handleStop} disabled={isLoading} size="sm">
-                  <Square className="mr-1 h-3 w-3" />
-                  Stop
-                </Button>
-              </>
-            ) : (
-              <Button onClick={handleStart} disabled={isLoading} size="sm" className="w-20 h-8">
-                <Play className="mr-1 h-3 w-3" />
-                Start
-              </Button>
+              </div>
             )}
+
+            {/* Timer Controls */}
+            <div className="flex gap-2 justify-end">
+              {projectTimer ? (
+                <>
+                  {projectTimer.pausedAt ? (
+                    <Button
+                      onClick={handleResume}
+                      disabled={isLoading}
+                      size="sm"
+                      className="h-8"
+                      variant="outline"
+                    >
+                      <Play className="mr-1 h-3 w-3" />
+                      Resume
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handlePause}
+                      disabled={isLoading}
+                      size="sm"
+                      className="h-8"
+                      variant="outline"
+                    >
+                      <Pause className="mr-1 h-3 w-3" />
+                      Pause
+                    </Button>
+                  )}
+                  <Button
+                    onClick={handleStopClick}
+                    disabled={isLoading}
+                    size="sm"
+                    className="h-8"
+                    variant="destructive"
+                  >
+                    <Square className="mr-1 h-3 w-3" />
+                    Stop Session
+                  </Button>
+                </>
+              ) : (
+                <Button onClick={handleStart} disabled={isLoading} size="sm" className="w-20 h-8">
+                  <Play className="mr-1 h-3 w-3" />
+                  Start
+                </Button>
+              )}
+            </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+      <ConfirmDialog
+        open={showStopConfirm}
+        onOpenChange={setShowStopConfirm}
+        onSubmit={handleStopConfirm}
+        title="Stop Timer Session?"
+        description="This will end your current timing session and save the recorded time to your reports."
+        submitText="Stop Session"
+        cancelText="Keep Running"
+      />
+    </>
   )
 }
